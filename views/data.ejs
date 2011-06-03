@@ -1,0 +1,22 @@
+<html>
+        <head><head>
+        <body>
+                <p>path:<strong><%= path %> </strong></p>
+                <p>stat:</p>
+                <p>
+                <table border="1">
+                   <tr>
+                     <td>name</td>
+                     <td>value</td>
+                   </tr>
+                   <% for(var p in stat){ %>
+                   <tr>
+                     <td><%= p %></td>
+                     <td><%= stat[p] %> </td>
+                   </tr>
+                   <%} %>
+                </table>
+                <p>data: </p>
+                <p> <%= data %> </p>
+        </body>
+</html>

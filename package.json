@@ -3,6 +3,7 @@
   , "version": "0.0.1"
   , "private": true
   , "dependencies": {
-    "jade": ">= 0.0.1"
+    "ejs": ">= 0.4.2",
+    "zookeeper":">=3.3.3-0"
   }
 }
