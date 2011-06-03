@@ -6,7 +6,7 @@ A zookeeper web browser in node.js. It's based on express and node-zookeeper.
 
 Edit app.js to configure your zk hosts
 
-     zk.init ({connect:"localhost:2181", timeout:200000, debug_level:ZK.ZOO_LOG_LEVEL_WARNING, host_order_deterministic:false});
+     var zkclient = new ZkClient("localhost:2181");
 
 ##Run
 Type command to start app

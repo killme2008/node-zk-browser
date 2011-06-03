@@ -5,12 +5,9 @@
 var express = require('express');
 var path=require('path');
 var util=require('util');
-var ZK = require ("zookeeper").ZooKeeper;
-var zk = new ZK();
-zk.init ({connect:"localhost:2181", timeout:200000, debug_level:ZK.ZOO_LOG_LEVEL_WARNING, host_order_deterministic:false});
-zk.on (ZK.on_connected, function (zkk) {
-    console.log ("zk session established, id=%s", zkk.client_id);
-});
+var ZkClient=require('./zk.js').ZkClient;
+var zkclient = new ZkClient("localhost:2181");
+
 var app = module.exports = express.createServer();
 
 // Configuration
@@ -47,7 +44,7 @@ app.get('/tree', function(req, res){
 //query data
 app.get("/get",function(req,res){
     var path=req.query.path || "/";
-    zk.a_get(path,null,function(rc,err,stat,data){
+    zkclient.zk.a_get(path,null,function(rc,err,stat,data){
         if(rc!=0)
             throw new Error(err);
         res.render("data",{ layout: false, 'stat':stat,'data':data,'path':path});
@@ -56,7 +53,7 @@ app.get("/get",function(req,res){
 //query children
 app.get('/children',function(req,res){
     var parenPath=req.query.path || '/';
-    zk.a_get_children(parenPath,null,function(rc,error,children){
+    zkclient.zk.a_get_children(parenPath,null,function(rc,error,children){
         if(rc!=0)
             throw new Error(error);
         var result=[];
