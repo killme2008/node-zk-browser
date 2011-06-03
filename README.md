@@ -11,4 +11,4 @@ Edit app.js to configure your zk hosts
 ##Run
 Type command to start app
 
-        node app.js
+        ./start.sh
