@@ -1,0 +1,17 @@
+
+node.js:134
+        throw e; // process.nextTick error, or 'error' event on first tick
+        ^
+Error: EADDRINUSE, Address already in use
+    at HTTPServer._doListen (net.js:1100:5)
+    at net.js:1071:14
+    at Object.lookup (dns.js:153:45)
+    at HTTPServer.listen (net.js:1065:20)
+    at Object.<anonymous> (/home/dennis/programming/js/node-js/node-zk-browser/app.js:79:5)
+    at Module._compile (module.js:407:26)
+    at Object..js (module.js:413:10)
+    at Module.load (module.js:339:31)
+    at Function._load (module.js:298:12)
+    at Array.<anonymous> (module.js:426:10)
+Express server listening on port 3000
+zk session established, id=130545d919c0012
