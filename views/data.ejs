@@ -1,6 +1,34 @@
 <html>
-        <head><head>
+        <head>
+          <script type="text/javascript" src="lib/jquery.js"></script>
+          <script type="text/javascript">
+            function login(){
+                var form=$("#login_form");
+                if(form.is(":hidden")){
+                    form.show();
+                }else{
+                    form.hide();
+                }
+            }
+          </script>
+        <head>
         <body>
+                <div id='login'>
+                  <% if(user) { %>
+                    <strong>welcome,<%= user %> </strong>
+                  <% }else{ %>
+                      <a href='#' onclick='login();'>login</a>
+                      <div id='login_form' style='display:none;'>
+                         <form method="post" action="/login">
+                           name:
+                           <input type="text" name="user[name]" />
+                           password:
+                           <input type="password" name="user[password]" />
+                           <input type="submit" value="Submit" />
+                         </form>
+                      </div>
+                  <% } %>
+                </div>
                 <p>path:<strong><%= path %> </strong></p>
                 <p>stat:</p>
                 <p>
