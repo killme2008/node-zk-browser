@@ -44,28 +44,54 @@ app.get('/tree', function(req, res){
     res.render('tree', {layout:false,'path':path  });
 });
 
+//login
 app.post("/login",function(req,res){
     var user=req.body.user;
     if(users[user.name]==user.password){
         req.session.user=user.name
+        req.session.cookie.maxAge=5*60*1000;
     }
-    res.redirect("/get");
+    res.redirect("/get?path="+req.body.path);
 });
+
+
+app.post("/edit",function(req,res){
+    if(req.session.user){
+        var path=req.body.path;
+        var new_data=req.body.new_data;
+        var version=Number(req.body.version);
+        zkclient.zk.a_set(path,new_data,version,function(rc,err,stat){
+            if(rc!=0){
+                res.send(err);
+            }else
+                res.send("set ok");
+        });
+    }else{
+        res.send("Please logon");
+    }
+});
+
 //query data
 app.get("/get",function(req,res){
     var path=req.query.path || "/";
     zkclient.zk.a_get(path,null,function(rc,err,stat,data){
-        if(rc!=0)
-            throw new Error(err);
+        if(rc!=0){
+            res.render("data",{ layout:false,message:err});
+            return;
+        }
         res.render("data",{ layout: false, 'stat':stat,'data':data,'path':path,'user': req.session.user});
     });
 });
+
 //query children
 app.get('/children',function(req,res){
     var parenPath=req.query.path || '/';
     zkclient.zk.a_get_children(parenPath,null,function(rc,error,children){
-        if(rc!=0)
-            throw new Error(error);
+        res.header("Content-Type","application/json");
+        if(rc!=0){
+            res.send("{error:"+err+"}");
+            return;
+        }
         var result=[];
         children.forEach(function(child){
             realPath=path.join(parenPath,child);
@@ -77,7 +103,6 @@ app.get('/children',function(req,res){
                 state:"closed"
             });
         });
-        res.header("Content-Type","application/json");
         res.send(result);
     });
 

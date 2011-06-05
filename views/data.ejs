@@ -2,6 +2,7 @@
         <head>
           <script type="text/javascript" src="lib/jquery.js"></script>
           <script type="text/javascript">
+            $.ajaxSetup({cache:false});//ajax调用不使用缓存
             function login(){
                 var form=$("#login_form");
                 if(form.is(":hidden")){
@@ -10,16 +11,43 @@
                     form.hide();
                 }
             }
+            function edit(){
+               <% if(user) { %>
+               var value=$("#data").val();
+               $("#data_container").html("<form id='edit_form' onsubmit='return;'>"+
+                                          "<input type='hidden' name='path' value='<%= path %>'/>"+
+                                          "<input type='hidden' name='version' value='<%= stat.version %>'/>"+
+                                          " <input type='text' name='new_data' id='new_data' value='"+
+                                           value+
+                                          "'/>  </form>");
+
+                $("#new_data").focus();
+                $("#new_data").keypress(function(e){
+                     if(e.keyCode==13){
+                          var new_data=$("#new_data").val();
+                          if(new_data!=value){
+                            $.post("/edit",$("#edit_form").serialize(),function(data){
+                                 alert(data);
+                                 window.location.href="get?path=<%= path %>";
+                            });
+                          }else
+                              $("#data_container").html(value);
+                          return false;
+                     }
+              });
+             <% } %>
+            }
           </script>
         <head>
         <body>
                 <div id='login'>
                   <% if(user) { %>
-                    <strong>welcome,<%= user %> </strong>
+                    <strong>Welcome,<%= user %> </strong>
                   <% }else{ %>
                       <a href='#' onclick='login();'>login</a>
                       <div id='login_form' style='display:none;'>
                          <form method="post" action="/login">
+                           <input type='hidden' name="path" value="<%= path %>"/>
                            name:
                            <input type="text" name="user[name]" />
                            password:
@@ -45,6 +73,9 @@
                    <%} %>
                 </table>
                 <p>data: </p>
-                <p> <%= data %> </p>
+                <input type='hidden' value='<%= data %>' id='data' />
+                <div id='data_container' onclick='edit();'>
+                  <%= data %>
+                </div>
         </body>
 </html>
