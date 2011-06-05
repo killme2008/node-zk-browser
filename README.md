@@ -12,3 +12,7 @@ Edit app.js to configure your zk hosts
 Type command to start app
 
         ./start.sh
+
+#Lisense
+
+        Apache License Version 2.0

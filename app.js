@@ -47,7 +47,7 @@ app.get("/get",function(req,res){
     zkclient.zk.a_get(path,null,function(rc,err,stat,data){
         if(rc!=0)
             throw new Error(err);
-        res.render("data",{ layout: false, 'stat':stat,'data':data,'path':path});
+        res.render("data",{ layout: false, 'stat':stat,'data':util.inspect(data),'path':path});
     });
 });
 //query children
