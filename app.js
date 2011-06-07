@@ -76,10 +76,10 @@ app.get("/get",function(req,res){
     var path=req.query.path || "/";
     zkclient.zk.a_get(path,null,function(rc,err,stat,data){
         if(rc!=0){
-            res.render("data",{ layout:false,message:err});
-            return;
+            res.send(err);
+        }else{
+            res.render("data",{ layout: false, 'stat':stat,'data':data,'path':path,'user': req.session.user});
         }
-        res.render("data",{ layout: false, 'stat':stat,'data':data,'path':path,'user': req.session.user});
     });
 });
 
@@ -88,21 +88,19 @@ app.get('/children',function(req,res){
     var parenPath=req.query.path || '/';
     zkclient.zk.a_get_children(parenPath,null,function(rc,error,children){
         res.header("Content-Type","application/json");
-        if(rc!=0){
-            res.send("{error:"+err+"}");
-            return;
-        }
         var result=[];
-        children.forEach(function(child){
-            realPath=path.join(parenPath,child);
-            result.unshift({
-                attributes:{"path":realPath,"rel":"chv"},
-                data:{
-                    title : child,icon:"ou.png", attributes: { "href" : ("get?path="+realPath) }
-                },
-                state:"closed"
+        if(rc==0){
+            children.forEach(function(child){
+                realPath=path.join(parenPath,child);
+                result.unshift({
+                    attributes:{"path":realPath,"rel":"chv"},
+                    data:{
+                        title : child,icon:"ou.png", attributes: { "href" : ("get?path="+realPath) }
+                    },
+                    state:"closed"
+                });
             });
-        });
+        }
         res.send(result);
     });
 
