@@ -12,6 +12,11 @@ var zkclient = new ZkClient("localhost:2181");
 var users = JSON.parse(fs.readFileSync(path.join(__dirname,'user.json'), 'utf8'));
 var app = module.exports = express.createServer();
 
+process.on('uncaughtException', function (err) {
+  console.error('Caught exception: ' + err);
+});
+
+
 // Configuration
 app.configure(function(){
     app.set('views', __dirname + '/views');
