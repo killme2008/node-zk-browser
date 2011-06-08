@@ -1,6 +1,6 @@
 ##node-zk-browser
 
-A zookeeper web administrator in node.js. It's based on express.js and node-zookeeper.It will display zookeeper's data as a lazy loading tree,and display every path's stat info and data;and you can create,edit or delete path if you logon.
+A zookeeper web administrator in node.js. It's based on [express.js](http://expressjs.com/) and [node-zookeeper](https://github.com/yfinkelstein/node-zookeeper).It will display zookeeper's data as a lazy loading tree,and display every path's stat info and data;and you can create,edit or delete path if you logon.
 
 ##Configure
 
@@ -18,5 +18,9 @@ Type command to start app
         ./start.sh
 
 #Lisense
-
         Apache License Version 2.0
+
+See LICENSE.txt file in the top level folder.
+
+#Author
+Dennis Zhuang(killme2008@gmail.com)
