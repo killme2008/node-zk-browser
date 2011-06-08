@@ -56,9 +56,43 @@ app.post("/login",function(req,res){
         req.session.user=user.name
         req.session.cookie.maxAge=5*60*1000;
     }
-    res.redirect("/get?path="+req.body.path);
+    res.redirect(req.header('Referer'));
 });
 
+app.post("/delete",function(req,res){
+    if(req.session.user){
+        var path=req.body.path;
+        var version=Number(req.body.version);
+        zkclient.zk.a_delete_(path,version,function(rc,err){
+            if(rc!=0)
+                res.send(err);
+            else
+                res.send("Delete ok");
+        });
+    }else{
+        res.send("Please logon");
+    }
+});
+
+app.get("/create",function(req,res){
+    res.render("create",{layout:false,user: req.session.user});
+});
+
+app.post("/create",function(req,res){
+    if(req.session.user){
+        var path=req.body.path;
+        var data=req.body.data;
+        var flag=Number(req.body.flag);
+        zkclient.zk.a_create(path,data,flag,function(rc,err,path){
+            if(rc!=0)
+                res.send(err);
+            else
+                res.send("Create ok");
+        });
+    }else{
+        res.send("Please logon");
+    }
+});
 
 app.post("/edit",function(req,res){
     if(req.session.user){

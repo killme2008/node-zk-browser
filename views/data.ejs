@@ -11,6 +11,22 @@
                     form.hide();
                 }
             }
+             function delete_path(){
+                  var path=$('#delete_form').find("input[name='path']").val();
+                  var lastPartIndex=path.lastIndexOf("/");
+                  var parenPath=path.substring(0,lastPartIndex);
+
+                  if(confirm("Are you sure want to delete "+path+"?")){
+                        $.post("/delete",$('#delete_form').serialize(),function(rt){
+                            alert(rt);
+                            if(rt=='Delete ok'){
+                               $(parent.document.body).find('#tree').attr('src', "tree?path="+parenPath);
+                               window.location.href="get?path="+parenPath;
+                            }
+                        });
+                  }
+             }
+
             function edit(){
                <% if(user) { %>
                var value=$("#data").val();
@@ -37,6 +53,8 @@
               });
              <% } %>
             }
+
+
           </script>
         <head>
         <body>
@@ -47,8 +65,7 @@
                       <a href='#' onclick='login();'>login</a>
                       <div id='login_form' style='display:none;'>
                          <form method="post" action="/login">
-                           <input type='hidden' name="path" value="<%= path %>"/>
-                           name:
+                            name:
                            <input type="text" name="user[name]" />
                            password:
                            <input type="password" name="user[password]" />
@@ -57,7 +74,15 @@
                       </div>
                   <% } %>
                 </div>
-                <p>path:<strong><%= path %> </strong></p>
+                <p>path:<strong><%= path %> </strong> &nbsp;&nbsp;
+                 <% if(user){ %>
+                  <form id='delete_form' onsubmit="return;">
+                    <input type='hidden' name='path' value='<%= path %>'/>
+                    <input type='hidden' name='version' value='<%= stat.version %>'/>
+                   <input type='button' value='delete' onclick="delete_path();"/>
+                  </form>
+                <% } %>
+                </p>
                 <p>stat:</p>
                 <p>
                 <table border="1">

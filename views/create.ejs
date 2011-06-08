@@ -1,0 +1,60 @@
+<html>
+   <head><title>Create path</title>
+         <script type="text/javascript" src="lib/jquery.js"></script>
+         <script type="text/javascript">
+            $.ajaxSetup({cache:false});//ajax调用不使用缓存
+            function login(){
+                var form=$("#login_form");
+                if(form.is(":hidden")){
+                    form.show();
+                }else{
+                    form.hide();
+                }
+            }
+         </script>
+   </head>
+   <body>
+     <div id='login'>
+       <% if(user) { %>
+       <strong>Welcome,<%= user %> </strong>
+       <% }else{ %>
+       <a href='#' onclick='login();'>login</a>
+       <div id='login_form' style='display:none;'>
+         <form method="post" action="/login">
+           name:
+           <input type="text" name="user[name]" />
+           password:
+           <input type="password" name="user[password]" />
+           <input type="submit" value="Submit" />
+         </form>
+       </div>
+       <% } %>
+     </div>
+     <div>
+      <form action="/create" method="post">
+        <table>
+          <tr>
+           <td>Path </td>
+           <td><input type='text' name="path"> </td>
+          </tr>
+         <tr>
+           <td>Data</td>
+           <td><input type='text' name="data"> </td>
+        </tr>
+        <tr>
+          <td>Type</td>
+          <td>
+         PERSISTENT&nbsp;<input type='radio' name='flag' value="0" checked="true"/></br>
+         PERSISTENT_SEQUENTIAL&nbsp;<input type='radio' name='flag' value="2"/> </br>
+         EPHEMERAL&nbsp;<input type='radio' name='flag' value="1"/> </br>
+         EPHEMERAL_SEQUENTIAL&nbsp;<input type='radio' name='flag' value="3"/> </br>
+          </td>
+        </tr>
+        <tr>
+          <td cols="2"><input type='submit' value="Create"/></td>
+        </tr>
+       <table>
+     </form>
+     </div>
+   </body>
+</html>
