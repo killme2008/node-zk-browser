@@ -3,38 +3,37 @@
 <script type="text/javascript" language="javascript">
   <!--
         $(function () {
-            $.ajaxSetup({cache:false});//ajax调用不使用缓存
-            $("#vcsTree").tree({//创建树开始
+            $.ajaxSetup({cache:false});
+            $("#zkTree").tree({
                   data : {
-                    type : "json",//类型为json
-                    async : true,//动态操作
+                    type : "json",
+                    async : true,
                     opts : {
-                        method : "get", //设置以get方式向服务器提交数据
-                        url : "children"//此页面返回以json标准格式的json数据串
+                        method : "get",
+                        url : "children"
                     }
                  },//end data
                  ui:{
-                     theme_name : "classic" //设置皮肤样式
+                     theme_name : "classic"
                  },
                  lang:{
-                 loading : "目录加载中……"  //设置节点打开时默认加载显示默认为loading
+                 loading : "目录加载中……"
              },
                  types :{
                     "default" : {
-                        draggable : false //设置节点不可拖拽
+                        draggable : false
                     }
                  },
              callback : {
                  beforedata : function(node,tree_obj){
                         var rootPath= '<%= path %>';
-                        return {path :  $(node).attr("path") || rootPath,rel : $(node).attr("rel")};//进行以异步传参
+                        return {path :  $(node).attr("path") || rootPath,rel : $(node).attr("rel")};
                 },
-                onselect : function(node,tree_obj){//节点单击事件
-                         var test = $(node).children("a").attr("href");//获取json串A标签中href属性值
+                onselect : function(node,tree_obj){
+                         var test = $(node).children("a").attr("href");
                          $(parent.document.body).find('#content').attr('src', test);
-                         //获取点击的A标签的href属性，然后获取右边的iframe对象，然后设置iframe的location
                 },
-                onsearch : function(node, tree_obj) {//节点查找功能
+                onsearch : function(node, tree_obj) {
                     tree_obj.container.find(".search").removeClass("search");
                     node.addClass("search");
                 }
@@ -42,7 +41,6 @@
             });
         });
          function searchnodes(){
-            //jQuery.tree.focused().search(jQuery('#search_').val());
             var searchPath=$('#search_path').val();
             window.location.href='tree?path='+searchPath;
             $(parent.document.body).find('#content').attr('src', "get?path="+searchPath);
@@ -50,7 +48,7 @@
     //-->
 </script>
         <div id="container">
-             <h2>Zookeeper</h2>
+             <h2><a href="https://github.com/killme2008/node-zk-browser" style='text-decoration:none;'>Node-ZK-Browser</a></h2>
              <div>
                 <a href="/create" target="content">create path</a>
              </div>
@@ -58,5 +56,5 @@
                          <input type="text" id="search_path" value='<%= path %>'/>
                          <input type="button" id="search_op" onclick="searchnodes()" value="Search" />
              </div>
-             <div id="vcsTree"></div>
+             <div id="zkTree"></div>
         </div>

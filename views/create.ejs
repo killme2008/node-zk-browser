@@ -2,7 +2,7 @@
    <head><title>Create path</title>
          <script type="text/javascript" src="lib/jquery.js"></script>
          <script type="text/javascript">
-            $.ajaxSetup({cache:false});//ajax调用不使用缓存
+            $.ajaxSetup({cache:false});
             function login(){
                 var form=$("#login_form");
                 if(form.is(":hidden")){
@@ -30,6 +30,7 @@
        </div>
        <% } %>
      </div>
+     </br>
      <div>
       <form action="/create" method="post">
         <table>
@@ -51,7 +52,7 @@
           </td>
         </tr>
         <tr>
-          <td cols="2"><input type='submit' value="Create"/></td>
+          <td colspan="2"><input type='submit' value="Create"/></td>
         </tr>
        <table>
      </form>
