@@ -78,11 +78,11 @@
                 </div>
                 </br>
                 <div>path:<strong><%= path %> </strong> &nbsp;&nbsp;
-                 <% if(user){ %>
+                  <% if(user){ %>
+                  <a href='#' onclick="delete_path();">delete</a>
                   <form id='delete_form' onsubmit="return;">
                     <input type='hidden' name='path' value='<%= path %>'/>
                     <input type='hidden' name='version' value='<%= stat.version %>'/>
-                   <input type='button' value='delete' onclick="delete_path();"/>
                   </form>
                 <% } %>
                 </div>
