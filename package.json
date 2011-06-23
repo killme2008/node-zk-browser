@@ -5,6 +5,7 @@
   , "dependencies": {
     "ejs": ">= 0.4.2",
     "express": ">=2.3.10",
-    "zookeeper":">=3.3.3-0"
+    "zookeeper":">=3.3.3-0",
+    "express-namespace":">=0.0.3"
   }
 }
