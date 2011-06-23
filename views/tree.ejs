@@ -1,5 +1,5 @@
-<script type="text/javascript" src="lib/jquery.js"></script>
-<script type="text/javascript" src="jquery.tree.js"></script>
+<script type="text/javascript" src="../lib/jquery.js"></script>
+<script type="text/javascript" src="../jquery.tree.js"></script>
 <script type="text/javascript" language="javascript">
   <!--
         $(function () {
@@ -10,7 +10,7 @@
                     async : true,
                     opts : {
                         method : "get",
-                        url : "children"
+                        url : "/node-zk/children"
                     }
                  },//end data
                  ui:{
@@ -42,15 +42,15 @@
         });
          function searchnodes(){
             var searchPath=$('#search_path').val();
-            window.location.href='tree?path='+searchPath;
-            $(parent.document.body).find('#content').attr('src', "get?path="+searchPath);
+            window.location.href='/node-zk/tree?path='+searchPath;
+            $(parent.document.body).find('#content').attr('src', "/node-zk/get?path="+searchPath);
          }
     //-->
 </script>
         <div id="container">
              <h2><a target="_blank" href="https://github.com/killme2008/node-zk-browser" style='text-decoration:none;'>Node-ZK-Browser</a></h2>
              <div>
-                <a href="/create" target="content">create path</a>
+                <a href="/node-zk/create" target="content">create path</a>
              </div>
              <div>
                          <input type="text" id="search_path" value='<%= path %>'/>

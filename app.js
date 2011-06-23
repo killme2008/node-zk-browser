@@ -23,11 +23,13 @@
  */
 
 var express = require('express');
+require('express-namespace');
 var path=require('path');
 var fs=require('fs');
 var util=require('util');
 var ZkClient=require('./zk.js').ZkClient;
 
+var port=3000;
 var zkclient = new ZkClient("localhost:2181");
 var users = JSON.parse(fs.readFileSync(path.join(__dirname,'user.json'), 'utf8'));
 var app = module.exports = express.createServer();
@@ -59,114 +61,122 @@ app.configure('production', function(){
 
 // Routes
 
-//index
 app.get('/', function(req, res){
-    res.render('index', { });
+    res.redirect("/node-zk");
 });
 
-//display tree
-app.get('/tree', function(req, res){
-    var path=req.query.path || "/";
-    res.render('tree', {layout:false,'path':path  });
-});
+app.namespace("/node-zk",function(){
 
-//login
-app.post("/login",function(req,res){
-    var user=req.body.user;
-    if(users[user.name]==user.password){
-        req.session.user=user.name
-        req.session.cookie.maxAge=5*60*1000;
-    }
-    res.redirect(req.header('Referer'));
-});
+    //index
+    app.get('/', function(req, res){
+        res.render('index', { });
+    });
 
-//delete
-app.post("/delete",function(req,res){
-    if(req.session.user){
-        var path=req.body.path;
-        var version=Number(req.body.version);
-        zkclient.zk.a_delete_(path,version,function(rc,err){
-            if(rc!=0)
-                res.send(err);
-            else
-                res.send("Delete ok");
-        });
-    }else{
-        res.send("Please logon");
-    }
-});
+    //display tree
+    app.get('/tree', function(req, res){
+        var path=req.query.path || "/";
+        res.render('tree', {layout:false,'path':path  });
+    });
 
+    //login
+    app.post("/login",function(req,res){
+        var user=req.body.user;
+        if(users[user.name]==user.password){
+            req.session.user=user.name
+            req.session.cookie.maxAge=5*60*1000;
+        }
+        res.redirect(req.header('Referer'));
+    });
 
-app.get("/create",function(req,res){
-    res.render("create",{layout:false,user: req.session.user});
-});
+    //delete
+    app.post("/delete",function(req,res){
+        if(req.session.user){
+            var path=req.body.path;
+            var version=Number(req.body.version);
+            zkclient.zk.a_delete_(path,version,function(rc,err){
+                if(rc!=0)
+                    res.send(err);
+                else
+                    res.send("Delete ok");
+            });
+        }else{
+            res.send("Please logon");
+        }
+    });
 
-app.post("/create",function(req,res){
-    if(req.session.user){
-        var path=req.body.path;
-        var data=req.body.data;
-        var flag=Number(req.body.flag);
-        zkclient.zk.a_create(path,data,flag,function(rc,err,path){
-            if(rc!=0)
-                res.send(err);
-            else
-                res.send("Create ok");
-        });
-    }else{
-        res.send("Please logon");
-    }
-});
+    //create view
+    app.get("/create",function(req,res){
+        res.render("create",{layout:false,user: req.session.user});
+    });
 
-app.post("/edit",function(req,res){
-    if(req.session.user){
-        var path=req.body.path;
-        var new_data=req.body.new_data;
-        var version=Number(req.body.version);
-        zkclient.zk.a_set(path,new_data,version,function(rc,err,stat){
+    //create
+    app.post("/create",function(req,res){
+        if(req.session.user){
+            var path=req.body.path;
+            var data=req.body.data;
+            var flag=Number(req.body.flag);
+            zkclient.zk.a_create(path,data,flag,function(rc,err,path){
+                if(rc!=0)
+                    res.send(err);
+                else
+                    res.send("Create ok");
+            });
+        }else{
+            res.send("Please logon");
+        }
+    });
+
+    //edit
+    app.post("/edit",function(req,res){
+        if(req.session.user){
+            var path=req.body.path;
+            var new_data=req.body.new_data;
+            var version=Number(req.body.version);
+            zkclient.zk.a_set(path,new_data,version,function(rc,err,stat){
+                if(rc!=0){
+                    res.send(err);
+                }else
+                    res.send("set ok");
+            });
+        }else{
+            res.send("Please logon");
+        }
+    });
+
+    //query data
+    app.get("/get",function(req,res){
+        var path=req.query.path || "/";
+        zkclient.zk.a_get(path,null,function(rc,err,stat,data){
             if(rc!=0){
                 res.send(err);
-            }else
-                res.send("set ok");
+            }else{
+                res.render("data",{ layout: false, 'stat':stat,'data':data,'path':path,'user': req.session.user});
+            }
         });
-    }else{
-        res.send("Please logon");
-    }
-});
-
-//query data
-app.get("/get",function(req,res){
-    var path=req.query.path || "/";
-    zkclient.zk.a_get(path,null,function(rc,err,stat,data){
-        if(rc!=0){
-            res.send(err);
-        }else{
-            res.render("data",{ layout: false, 'stat':stat,'data':data,'path':path,'user': req.session.user});
-        }
     });
-});
 
-//query children
-app.get('/children',function(req,res){
-    var parenPath=req.query.path || '/';
-    zkclient.zk.a_get_children(parenPath,null,function(rc,error,children){
-        res.header("Content-Type","application/json");
-        var result=[];
-        if(rc==0){
-            children.forEach(function(child){
-                realPath=path.join(parenPath,child);
-                result.unshift({
-                    attributes:{"path":realPath,"rel":"chv"},
-                    data:{
-                        title : child,icon:"ou.png", attributes: { "href" : ("get?path="+realPath) }
-                    },
-                    state:"closed"
+    //query children
+    app.get('/children',function(req,res){
+        var parenPath=req.query.path || '/';
+        zkclient.zk.a_get_children(parenPath,null,function(rc,error,children){
+            res.header("Content-Type","application/json");
+            var result=[];
+            if(rc==0){
+                children.forEach(function(child){
+                    realPath=path.join(parenPath,child);
+                    result.unshift({
+                        attributes:{"path":realPath,"rel":"chv"},
+                        data:{
+                            title : child,icon:"ou.png", attributes: { "href" : ("/node-zk/get?path="+realPath) }
+                        },
+                        state:"closed"
+                    });
                 });
-            });
-        }
-        res.send(result);
+            }
+            res.send(result);
+        });
     });
-
 });
 
-app.listen(3000);
+app.listen(port);
 console.log("Express server listening on port %d", app.address().port);

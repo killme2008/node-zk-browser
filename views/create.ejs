@@ -1,6 +1,6 @@
 <html>
    <head><title>Create path</title>
-         <script type="text/javascript" src="lib/jquery.js"></script>
+         <script type="text/javascript" src="../lib/jquery.js"></script>
          <script type="text/javascript">
             $.ajaxSetup({cache:false});
             function login(){
@@ -20,7 +20,7 @@
        <% }else{ %>
        <a href='#' onclick='login();'>login</a>
        <div id='login_form' style='display:none;'>
-         <form method="post" action="/login">
+         <form method="post" action="/node-zk/login">
            name:
            <input type="text" name="user[name]" />
            password:
@@ -32,7 +32,7 @@
      </div>
      </br>
      <div>
-      <form action="/create" method="post">
+      <form action="/node-zk/create" method="post">
         <table>
           <tr>
            <td>Path </td>
