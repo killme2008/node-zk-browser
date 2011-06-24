@@ -3,14 +3,17 @@
 A zookeeper web administrator in node.js. It's based on [express.js](http://expressjs.com/) and [node-zookeeper](https://github.com/yfinkelstein/node-zookeeper).It will display zookeeper's data as a lazy loading tree,and display every path's stat info and data;and you can create,edit or delete path if you logon.
 
 ##Configure
+First,you must install dependencies with npm
 
-Edit app.js to configure your zk hosts
+          npm install -d
 
-     var zkclient = new ZkClient("localhost:2181");
+Then edit app.js to configure your zk hosts
 
-Edit user.json to configure your administrator account:
+          var zkclient = new ZkClient("localhost:2181");
 
-     { "name" : "password"}
+And edit user.json to configure your administrator account:
+
+         { "name" : "password"}
 
 ##Run
 Type command to start app
@@ -19,7 +22,7 @@ Type command to start app
 
 You can visit node-zk now at
 
-    http://localhost:3000
+        http://localhost:3000
 
 #Lisense
         Apache License Version 2.0
