@@ -1,8 +1,8 @@
 {
-    "name": "application-name"
-  , "version": "0.0.1"
-  , "private": true
-  , "dependencies": {
+   "name": "application-name",
+  "version": "0.0.1",
+  "private": true,
+  "dependencies": {
     "ejs": ">= 0.4.2",
     "express": ">=2.3.10",
     "zookeeper":">=3.3.3-0",
