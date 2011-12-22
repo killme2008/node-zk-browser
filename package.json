@@ -7,5 +7,6 @@
     "express": ">=2.3.10",
     "zookeeper":">=3.3.3-0",
     "express-namespace":">=0.0.3"
-  }
+  },
+  "engines": { "node":">= 0.4.0 < 0.5.0" }
 }
