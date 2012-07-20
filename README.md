@@ -4,7 +4,7 @@ A zookeeper web administrator in node.js. It's based on [express.js](http://expr
 
 ##Requirement
 
-You must install node.js 0.4.x from https://github.com/joyent/node/tags and [npm](https://github.com/isaacs/npm).
+You must install node.js 0.8.x from https://github.com/joyent/node/tags and [npm](https://github.com/isaacs/npm).
 
 ##Configure
 First,you must install dependencies with npm
