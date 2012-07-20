@@ -179,4 +179,4 @@ app.namespace("/node-zk",function(){
 });
 
 app.listen(port);
-console.log("Express server listening on port %d", app.address().port);
+console.log("Express server listening on port %d", port);
