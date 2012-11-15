@@ -30,7 +30,8 @@ var util=require('util');
 var ZkClient=require('./zk.js').ZkClient;
 
 var port=3000;
-var zkclient = new ZkClient("localhost:2181");
+var host = process.env.ZK_HOST || 'localhost:2181'
+var zkclient = new ZkClient(host);
 var users = JSON.parse(fs.readFileSync(path.join(__dirname,'user.json'), 'utf8'));
 var app = module.exports = express.createServer();
 
