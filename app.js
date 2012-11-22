@@ -33,7 +33,7 @@ var port=3000;
 var host = process.env.ZK_HOST || 'localhost:2181'
 var zkclient = new ZkClient(host);
 var users = JSON.parse(fs.readFileSync(path.join(__dirname,'user.json'), 'utf8'));
-var app = module.exports = express.createServer();
+var app = express();
 
 process.on('uncaughtException', function (err) {
   console.error('Caught exception: ' + err);
