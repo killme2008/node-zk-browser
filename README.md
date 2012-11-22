@@ -14,6 +14,12 @@ First,you must install dependencies with npm
 Then edit app.js to configure your zk hosts
 
           var zkclient = new ZkClient("localhost:2181");
+		  
+Or you can pass it by enviroment variable:
+
+         export ZK_HOST="localhost:2181"
+		 
+in `start.sh`.
 
 And edit user.json to configure your administrator account:
 
