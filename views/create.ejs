@@ -12,18 +12,21 @@
                 }
             }
          </script>
+		  <link href="http://twitter.github.com/bootstrap/assets/css/bootstrap.css" rel="stylesheet">
+		  <link href="http://twitter.github.com/bootstrap/assets/css/bootstrap-responsive.css" rel="stylesheet">
    </head>
    <body>
+	 <div class= "container">
      <div id='login'>
        <% if(user) { %>
-       <strong>Welcome,<%= user %> </strong>
+       <h3>Welcome,<%= user %> </h3>
        <% }else{ %>
-       <a href='#' onclick='login();'>login</a>
+       <a href='#' onclick='login();'><label>Signin</label></a>
        <div id='login_form' style='display:none;'>
          <form method="post" action="/node-zk/login">
-           name:
+		   <label>Username</label>
            <input type="text" name="user[name]" />
-           password:
+		   <label>Password</label>
            <input type="password" name="user[password]" />
            <input type="submit" value="Submit" />
          </form>
@@ -33,7 +36,7 @@
      </br>
      <div>
       <form action="/node-zk/create" method="post">
-        <table>
+        <table class= "table table-bordered">
           <tr>
            <td>Path </td>
            <td><input type='text' name="path"> </td>
@@ -56,6 +59,7 @@
         </tr>
        <table>
      </form>
+	  </container>
      </div>
    </body>
 </html>

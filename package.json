@@ -1,7 +1,6 @@
 {
-  "name": "application-name",
+  "name": "node-zk-browser",
   "version": "0.0.2",
-  "private": true,
   "dependencies": {
     "ejs": ">= 0.7.2",
     "express": ">=3.0",

@@ -54,30 +54,34 @@
                       return false;
                  });
                }
-             <% } %>
+             <% } else { %>
+               alert ("Please sign in first.");
+            <% } %>
             }
 
           </script>
+		  <link href="http://twitter.github.com/bootstrap/assets/css/bootstrap.css" rel="stylesheet">
+		  <link href="http://twitter.github.com/bootstrap/assets/css/bootstrap-responsive.css" rel="stylesheet">
         <head>
         <body>
+		  <div class= "container">
                 <div id='login'>
                   <% if(user) { %>
-                    <strong>Welcome,<%= user %> </strong>
+                    <h3>Welcome,<%= user %> </h3>
                   <% }else{ %>
-                      <a href='#' onclick='login();'>login</a>
+                      <a href='#' onclick='login();'><label>Signin</label></a>
                       <div id='login_form' style='display:none;'>
                          <form method="post" action="/node-zk/login">
-                            name:
+						   <label>Username</label>
                            <input type="text" name="user[name]" />
-                           password:
+						   <label>Password</label>
                            <input type="password" name="user[password]" />
                            <input type="submit" value="Submit" />
                          </form>
                       </div>
                   <% } %>
                 </div>
-                </br>
-                <div>path:<strong><%= path %> </strong> &nbsp;&nbsp;
+                <label>Path:</label> <h4><%= path %> &nbsp;&nbsp; 
                   <% if(user){ %>
                   <a href='#' onclick="delete_path();">delete</a>
                   <form id='delete_form' onsubmit="return;">
@@ -85,10 +89,9 @@
                     <input type='hidden' name='version' value='<%= stat.version %>'/>
                   </form>
                 <% } %>
-                </div>
-                <div>stat:</div>
-                <div>
-                <table border="1">
+				  </h4>
+				<label>Stat:</label>
+                <table class= "table table-bordered">
                    <tr>
                      <td>name</td>
                      <td>value</td>
@@ -100,13 +103,15 @@
                    </tr>
                    <%} %>
                 </table>
-                </div>
-                </br>
-                </br>
-                <div>data: </div>
+                <label>Data (Click on the value to edit it) : </label>
                 <input type='hidden' value='<%= data %>' id='data' />
                 <div id='data_container' onclick='edit();'>
+				  <% if (data && data != ''){ %>
                   <%= data %>
+				  <% } else {%>
+				     NO DATA OR EMPTY VALUE
+                 <% } %>
                 </div>
+			</div>
         </body>
 </html>
