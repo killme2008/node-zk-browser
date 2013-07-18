@@ -1,64 +1,64 @@
 <script type="text/javascript" src="lib/jquery.js"></script>
 <script type="text/javascript" src="jquery.tree.js"></script>
-<script type="text/javascript" language="javascript">
-  <!--
-     String.prototype.endsWith = function(suffix) {
-  	   return this.indexOf(suffix, this.length - suffix.length) !== -1;
-	 };
-        $(function () {
-            $.ajaxSetup({cache:false});
-            $("#zkTree").tree({
-                  data : {
-                    type : "json",
-                    async : true,
-                    opts : {
-                        method : "get",
-                        url : "/node-zk/children"
-                    }
-                 },//end data
-                 ui:{
-                     theme_name : "classic"
-                 },
-                 lang:{
-                 loading : "目录加载中……"
-             },
-                 types :{
-                    "default" : {
-                        draggable : false
-                    }
-                 },
-             callback : {
-                 beforedata : function(node,tree_obj){
-                        var rootPath= '<%= path %>';
-                        return {path :  $(node).attr("path") || rootPath,rel : $(node).attr("rel")};
+<script type="text/javascript">
+    String.prototype.endsWith = function(suffix) {
+        return this.indexOf(suffix, this.length - suffix.length) !== -1;
+    };
+    $(function () {
+        $.ajaxSetup({cache:false});
+        $("#zkTree").tree({
+            data : {
+                type : "json",
+                async : true,
+                opts : {
+                    method : "get",
+                    url : "/node-zk/children"
+                }
+            },
+            ui : {
+                theme_name : "classic"
+            },
+            lang : {
+                loading : "目录加载中……"
+            },
+            types : {
+                "default" : {
+                    draggable : false
+                }
+            },
+            callback : {
+                beforedata : function(node,tree_obj) {
+                    var rootPath= '<%= path %>';
+                    return {path :  $(node).attr("path") || rootPath,rel : $(node).attr("rel")};
                 },
-                onselect : function(node,tree_obj){
-                         var test = $(node).children("a").attr("href");
-                         $(parent.document.body).find('#content').attr('src', test);
+                onselect : function(node,tree_obj) {
+                    var test = $(node).children("a").attr("href");
+                    $(parent.document.body).find('#content').attr('src', test);
                 },
                 onsearch : function(node, tree_obj) {
                     tree_obj.container.find(".search").removeClass("search");
                     node.addClass("search");
+                },
+                ondblclk : function(node, tree_obj) {
+                    tree_obj.refresh(node);
                 }
-            } //end callback
-            });
+            }
         });
-         function searchnodes(){
-            var searchPath=$('#search_path').val();
-
-            window.location.href='/node-zk/tree?path='+searchPath;
-            $(parent.document.body).find('#content').attr('src', "/node-zk/get?path="+searchPath);
-         }
-    //-->
+     });
+     function searchnodes(){
+         var searchPath=$('#search_path').val();
+         window.location.href='/node-zk/tree?path='+searchPath;
+         $(parent.document.body).find('#content').attr('src', "/node-zk/get?path="+searchPath);
+     }
 </script>
-        <div id="container">
-             <h2><a target="_blank" href="https://github.com/killme2008/node-zk-browser" style='text-decoration:none;'>Node-ZK-Browser</a></h2>
-             <div>
-                <a href="/node-zk/create" target="content">create path</a>
-             </div>
-             <div>
-                         <input type="text" id="search_path" value='<%= path %>'/>
-                         <input type="button" id="search_op" onclick="searchnodes()" value="Search" />
-             </div>
-             <div id="zkTree"></div>
-        </div>
+<div id="container">
+     <h2><a target="_blank" href="https://github.com/killme2008/node-zk-browser" style='text-decoration:none;'>Node-ZK-Browser</a></h2>
+     <div>
+         <a href="/node-zk/create" target="content">create path</a>
+     </div>
+     <div>
+         <input type="text" id="search_path" value='<%= path %>'/>
+         <input type="button" id="search_op" onclick="searchnodes()" value="Search" />
+     </div>
+     <div id="zkTree"></div>
+</div>
