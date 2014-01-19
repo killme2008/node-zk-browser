@@ -29,8 +29,8 @@ var fs=require('fs');
 var util=require('util');
 var ZkClient=require('./zk.js').ZkClient;
 
-var port=3000;
-var host = process.env.ZK_HOST || 'localhost:2181'
+var port = process.env.ZK_BROWSER_PORT || 3000;
+var host = process.env.ZK_HOST || 'localhost:2181';
 var zkclient = new ZkClient(host);
 var users = JSON.parse(fs.readFileSync(path.join(__dirname,'user.json'), 'utf8'));
 var app = express();
