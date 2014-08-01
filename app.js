@@ -76,7 +76,7 @@ app.namespace("/node-zk",function(){
     //display tree
     app.get('/tree', function(req, res){
         var path=req.query.path || "/";
-        res.render('tree', {layout:false,'path':path  });
+        res.render('tree', {layout:false,'path':path, 'host':host});
     });
 
     //login
