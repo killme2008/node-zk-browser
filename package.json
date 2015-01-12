@@ -4,7 +4,7 @@
   "dependencies": {
     "ejs": ">= 0.7.2",
     "express": "3.x",
-    "zookeeper":">=3.4.1-4",
+    "zookeeper":"*",
     "express-namespace":">=0.1.1"
   }
 }
