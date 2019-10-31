@@ -31,6 +31,12 @@
                     var rootPath= '<%= path %>';
                     return {path :  $(node).attr("path") || rootPath,rel : $(node).attr("rel")};
                 },
+                ondata: function(data, tree_obj) {
+                    data.sort(function(node_a, node_b) {
+                        return node_a.attributes.path < node_b.attributes.path ? -1 : 1;
+                    });
+                    return data;
+                },
                 onselect : function(node,tree_obj) {
                     var test = $(node).children("a").attr("href");
                     $(parent.document.body).find('#content').attr('src', test);
